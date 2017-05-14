@@ -1,12 +1,18 @@
 #coding=utf-8
 import scrapy
+import sys
 from scrapy.loader import ItemLoader
+import logging
+
+
+reload(sys)
+sys.setdefaultencoding( "utf-8" )
 
 class zhihu_data(scrapy.Item):
-	#user_name = scrapy.Field()
-	#user_describe = scrapy.Field()
 	data_title = scrapy.Field()
 	data_link = scrapy.Field()
+	author_name = scrapy.Field()
+	author_describe = scrapy.Field()
 
 class zhihuSpider(scrapy.Spider):
 	name = "zhihu"
@@ -34,10 +40,12 @@ class zhihuSpider(scrapy.Spider):
 		for item in dailyhot.css('div.explore-feed'):
 			self.itemlist.append(self.parse_item(item))
 		for i in self.itemlist:
-			print '===================='
-			print i.load_item()['data_title']
-			print i.load_item()['data_link']
-			print '....................'
+			logging.log(logging.INFO,'====================')
+			logging.log(logging.INFO,'%s',i.load_item()['author_name'][0])
+			logging.log(logging.INFO,"%s",i.load_item()['author_describe'][0])
+			logging.log(logging.INFO,"%s",i.load_item()['data_link'][0])
+			logging.log(logging.INFO,"%s",i.load_item()['data_title'][0])
+			logging.log(logging.INFO,'....................')
 		itemdict = {"item":self.itemlist,}    #parse只能return 字典或者item或者None
 		return itemdict
 	
@@ -45,6 +53,8 @@ class zhihuSpider(scrapy.Spider):
 		l = ItemLoader(item=zhihu_data(), selector=item_selector)
 		l.add_css('data_link','h2 a::attr(href)')
 		l.add_css('data_title','h2 a::text')
+		l.add_css('author_name','div.zm-item-answer-author-info a::text')
+		l.add_css('author_describe','div.zm-item-answer-author-info span::attr(title)')
 		return l
 
     	
