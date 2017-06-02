@@ -3,6 +3,8 @@ import scrapy
 import sys
 from scrapy.loader import ItemLoader
 import logging
+import time
+from PIL import Image
 
 
 reload(sys)
@@ -18,6 +20,7 @@ class zhihuSpider(scrapy.Spider):
 	name = "zhihu"
 	username = '13817494755'
 	password = '1987910'
+
 	cookie = {
  		'd_c0':'AEDCenyoTguPTutKgwY7oav0pwmQ5zX0oVM=|1487037220',
 		'_zap':'c5686156-205f-4df0-87ad-ecf8771f4820',
@@ -55,17 +58,35 @@ class zhihuSpider(scrapy.Spider):
 		print '_xcrf:'
 		self.xcrf = response.css('body > div.index-main > div > div.desk-front.sign-flow.clearfix.sign-flow-simple > div.view.view-signin > form > input[type="hidden"]::attr(value)').extract_first()
 		print self.xcrf
+		return self.download_captcha()
 
+	def download_captcha(self):
+		t = str(int(time.time()*1000))
+		captcha_url = 'http://www.zhihu.com/captcha.gif?r='+t+'&type=login'
+		print '=====captcha url is ' + captcha_url
+		return scrapy.Request(url=captcha_url,callback=self.after_download_captcha)
+
+
+	def after_download_captcha(self,response):
+		print '======download captcha sucess========='
+		with open('D:\\python\\captch.img',"wb") as f:
+			f.write(response.body)
+			f.close()
+		im = Image.open('D:\\python\\captch.img')
+		im.show()
+		self.captcha = raw_input('input the captcha:')
 		return scrapy.FormRequest('https://www.zhihu.com/login/phone_num',
 			formdata = {
-				'_xsrf': self.xcrf,
+				'_xsrf': '%s' % self.xcrf,
 				'password': self.password,
-				'captcha_type':'cn',
+				'captcha':'%s' % self.captcha,
 				'phone_num':self.username,
+				'remember_me':'true',
 			},
 			cookies = self.cookie,
 			callback =  self.after_login    
 		)
+
 
 	def after_login(self,response):
 		print '========login Sucess========'
