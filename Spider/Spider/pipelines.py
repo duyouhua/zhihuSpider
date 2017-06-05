@@ -23,5 +23,6 @@ class Spider_Record_Item_Pipeline(object):
 				logging.log(logging.INFO,"%s",i.load_item()['data_link'][0])
 				logging.log(logging.INFO,"%s",i.load_item()['data_title'][0])
 				logging.log(logging.INFO,'....................')
+				pass
 		return DropItem("over record pipeline")
 

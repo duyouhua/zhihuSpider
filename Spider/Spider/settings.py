@@ -60,9 +60,20 @@ ROBOTSTXT_OBEY = True
 
 # Disable cookies (enabled by default)
 #COOKIES_ENABLED = False
-
+COOKIE = {	'q_c1': '18ade8a474bc44feb35c5daee88edf9b|1494493264000|1494493264000', 
+			'__utmz': '51854390.1496392035.3.3.utmcsr', 'z_c0': 'Mi4wQURCQUFsTVcwZ29BUU1KNmZLaE9DeGNBQUFCaEFsVk5DVlJjV1FEUzRYSlo1Yjh0ejBSTmJSY1BIWnlVSVRyTDJB|1496631049|8315af87b3e602f65edb0bacfa3241cd00f3de19', 
+			'_zap': 'c5686156-205f-4df0-87ad-ecf8771f4820',
+ '__utmv': '51854390.000--|2', '_xsrf': 'c0f841f581938792262f8e41802b9a5c', 
+ 'r_cap_id': '"MmY4NGI2ZjgyNjVhNGQyMTkyMjYxMmNhYjcxZDIxYjM', 
+ 'cap_id': '"NDY5NmYwNzhkNjY4NDE3OGJjNjMwZTFhYjg3NDRlNTA', 
+ '__utma': '51854390.652328559.1496369069.1496392035.1496630992.4', 
+ 'd_c0': '"AEDCenyoTguPTutKgwY7oav0pwmQ5zX0oVM', 
+ '__utmc': '51854390', '__utmb': '51854390.0.10.1496630992', }
 # Disable Telnet Console (enabled by default)
 #TELNETCONSOLE_ENABLED = False
+
+#知乎explore今日最热加载数
+dayhot = 5
 
 # Override the default request headers:
 DEFAULT_REQUEST_HEADERS = {
